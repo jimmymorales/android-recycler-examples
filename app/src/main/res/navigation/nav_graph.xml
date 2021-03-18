@@ -16,6 +16,9 @@
         <action
             android:id="@+id/to_recycler_view_types_example_fragment"
             app:destination="@id/recyclerViewTypesExampleFragment" />
+        <action
+            android:id="@+id/to_recycler_view_concat_example_fragment"
+            app:destination="@id/recyclerViewConcatExampleFragment" />
     </fragment>
     <fragment
         android:id="@+id/nestedScrollViewExampleFragment"
@@ -26,5 +29,10 @@
         android:id="@+id/recyclerViewTypesExampleFragment"
         android:name="dev.jimmymorales.rvdemo.RecyclerViewTypesExampleFragment"
         android:label="RecyclerView Types Example Fragment"
+        tools:layout="@layout/fragment_recycler_view" />
+    <fragment
+        android:id="@+id/recyclerViewConcatExampleFragment"
+        android:name="dev.jimmymorales.rvdemo.RecyclerViewConcatExampleFragment"
+        android:label="RecyclerViewConcatExampleFragment"
         tools:layout="@layout/fragment_recycler_view" />
 </navigation>

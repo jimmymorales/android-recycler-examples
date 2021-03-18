@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             rvWithTypesExampleButton.setOnClickListener {
                 findNavController()
                     .navigate(MainFragmentDirections.toRecyclerViewTypesExampleFragment())
+            }
+            rvWithConcatExampleButton.setOnClickListener {
+                findNavController()
+                    .navigate(MainFragmentDirections.toRecyclerViewConcatExampleFragment())
             }
         }
     }
@@ -147,17 +152,23 @@ class NestedScrollViewExampleFragment :
 
 
 /**
- * RECYCLER VIEW EXAMPLE WITH VIEW TYPES
+ * RECYCLER VIEW ADAPTER EXAMPLE WITH VIEW TYPES
  */
 class ItemsAndHeaderAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var header = ""
+        set(value) {
+            field = value
+            notifyItemChanged(0)
+        }
+
     private val items = mutableListOf<String>()
 
     fun updateList(newItems: List<String>) {
         items.apply {
             clear()
             addAll(newItems)
+            notifyItemRangeChanged(1, newItems.count())
         }
     }
 
@@ -211,5 +222,53 @@ class RecyclerViewTypesExampleFragment :
         val adapter = (binding.recyclerView.adapter as ItemsAndHeaderAdapter)
         adapter.header = state.header
         adapter.updateList(state.items)
+    }
+}
+
+/**
+ * RECYCLER VIEW EXAMPLE WITH VIEW TYPES
+ */
+class HeaderAdapter : RecyclerView.Adapter<HeaderViewHolder>() {
+
+    var header = ""
+        set(value) {
+            field = value
+            notifyItemChanged(0)
+        }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
+        val binding = LayoutHeaderViewBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return HeaderViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
+        holder.bind(header)
+    }
+
+    // Only Header
+    override fun getItemCount(): Int = 1
+}
+
+/**
+ * Example with a RecyclerView with a ConcatAdapter
+ */
+class RecyclerViewConcatExampleFragment :
+    BaseFragment<FragmentRecyclerViewBinding>(R.layout.fragment_recycler_view) {
+
+    override fun createBinding(view: View) = FragmentRecyclerViewBinding.bind(view)
+
+    override fun initView(binding: FragmentRecyclerViewBinding) {
+        binding.recyclerView.adapter = ConcatAdapter(HeaderAdapter(), ItemsAdapter())
+    }
+
+    override fun onStateChanged(binding: FragmentRecyclerViewBinding, state: UIState) {
+        (binding.recyclerView.adapter as ConcatAdapter).let { concatAdapter ->
+            val adapters = concatAdapter.adapters
+            val headerAdapter = adapters[0] as HeaderAdapter
+            val itemsAdapter = adapters[1] as ItemsAdapter
+            headerAdapter.header = state.header
+            itemsAdapter.submitList(state.items)
+        }
     }
 }

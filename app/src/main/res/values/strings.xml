@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">RV Demo</string>
-    <string name="nestedscrollview_example">NestedScrollView Example</string>
-    <string name="rv_with_types_example">RecyclerView with types Example</string>
+    <string name="nestedscrollview_example">NestedScrollView</string>
+    <string name="rv_with_types_example">RecyclerView with types</string>
+    <string name="rv_with_concat_example">RecyclerView with ConcatAdapter</string>
 </resources>

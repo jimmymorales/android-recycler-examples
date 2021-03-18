@@ -30,6 +30,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nsvExampleButton"
+        app:layout_constraintBottom_toTopOf="@id/rvWithConcatExampleButton"/>
+
+    <Button
+        android:id="@+id/rvWithConcatExampleButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_padding"
+        android:layout_marginTop="@dimen/main_padding"
+        android:layout_marginEnd="@dimen/main_padding"
+        android:text="@string/rv_with_concat_example"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvWithTypesExampleButton"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
