@@ -55,9 +55,23 @@
         android:layout_marginTop="@dimen/main_padding"
         android:layout_marginEnd="@dimen/main_padding"
         android:text="@string/epoxy_example"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/composeExampleButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rvWithConcatExampleButton" />
+
+    <Button
+        android:id="@+id/composeExampleButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_padding"
+        android:layout_marginTop="@dimen/main_padding"
+        android:layout_marginEnd="@dimen/main_padding"
+        android:text="@string/compose_example"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/epoxyExampleButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

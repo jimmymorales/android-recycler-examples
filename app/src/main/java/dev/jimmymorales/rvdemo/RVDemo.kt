@@ -7,6 +7,22 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.coroutineScope
@@ -26,6 +42,7 @@ import dev.jimmymorales.rvdemo.databinding.FragmentNestedscrollviewExampleBindin
 import dev.jimmymorales.rvdemo.databinding.FragmentRecyclerViewBinding
 import dev.jimmymorales.rvdemo.databinding.LayoutHeaderViewBinding
 import dev.jimmymorales.rvdemo.databinding.LayoutItemViewBinding
+import dev.jimmymorales.rvdemo.ui.theme.RVDemoTheme
 import dev.jimmymorales.rvdemo.ui.utils.KotlinEpoxyHolder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,6 +71,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             epoxyExampleButton.setOnClickListener {
                 findNavController()
                     .navigate(MainFragmentDirections.toEpoxyRecyclerViewExampleFragment())
+            }
+            composeExampleButton.setOnClickListener {
+                findNavController()
+                    .navigate(MainFragmentDirections.toComposeExampleFragment())
             }
         }
     }
@@ -340,3 +361,76 @@ class EpoxyRecyclerViewExampleFragment : BaseFragment<FragmentEpoxyRecyclerViewB
         }
     }
 }
+
+class ComposeExampleFragment : Fragment() {
+
+    private val viewModel by navGraphViewModels<MainViewModel>(R.id.nav_graph)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                RVDemoTheme {
+                    Scaffold {
+                        val state by viewModel.uiState.collectAsState()
+
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                        ) {
+                            item {
+                                Header(title = state.header)
+                            }
+
+                            items(state.items) { item ->
+                                Item(text = item)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    @Composable
+    fun Header(title: String) {
+        Text(
+            text = title,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = dimensionResource(id = R.dimen.main_padding)),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h4,
+        )
+    }
+
+    @Composable
+    fun Item(text: String) {
+        Text(
+            text = text,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = dimensionResource(id = R.dimen.main_padding)),
+            style = MaterialTheme.typography.h6,
+        )
+    }
+
+    @Preview
+    @Composable
+    fun HeaderPreview() {
+        RVDemoTheme {
+            Header(title = "Some cool header")
+        }
+    }
+
+    @Preview
+    @Composable
+    fun ItemPreview() {
+        RVDemoTheme(darkTheme = true) {
+            Item(text = "ITEM #10")
+        }
+    }
+} 

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/to_epoxy_recycler_view_example_fragment"
             app:destination="@id/epoxyRecyclerViewExampleFragment" />
+        <action
+            android:id="@+id/to_compose_example_fragment"
+            app:destination="@id/composeExampleFragment" />
     </fragment>
     <fragment
         android:id="@+id/nestedScrollViewExampleFragment"
@@ -43,4 +46,8 @@
         android:name="dev.jimmymorales.rvdemo.EpoxyRecyclerViewExampleFragment"
         android:label="EpoxyRecyclerViewExampleFragment"
         tools:layout="@layout/fragment_epoxy_recycler_view"/>
+    <fragment
+        android:id="@+id/composeExampleFragment"
+        android:name="dev.jimmymorales.rvdemo.ComposeExampleFragment"
+        android:label="ComposeExampleFragment" />
 </navigation>

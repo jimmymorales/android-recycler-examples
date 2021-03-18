@@ -4,4 +4,5 @@
     <string name="rv_with_types_example">RecyclerView with types</string>
     <string name="rv_with_concat_example">RecyclerView with ConcatAdapter</string>
     <string name="epoxy_example">Epoxy</string>
+    <string name="compose_example">Compose</string>
 </resources>
