@@ -19,6 +19,9 @@
         <action
             android:id="@+id/to_recycler_view_concat_example_fragment"
             app:destination="@id/recyclerViewConcatExampleFragment" />
+        <action
+            android:id="@+id/to_epoxy_recycler_view_example_fragment"
+            app:destination="@id/epoxyRecyclerViewExampleFragment" />
     </fragment>
     <fragment
         android:id="@+id/nestedScrollViewExampleFragment"
@@ -35,4 +38,9 @@
         android:name="dev.jimmymorales.rvdemo.RecyclerViewConcatExampleFragment"
         android:label="RecyclerViewConcatExampleFragment"
         tools:layout="@layout/fragment_recycler_view" />
+    <fragment
+        android:id="@+id/epoxyRecyclerViewExampleFragment"
+        android:name="dev.jimmymorales.rvdemo.EpoxyRecyclerViewExampleFragment"
+        android:label="EpoxyRecyclerViewExampleFragment"
+        tools:layout="@layout/fragment_epoxy_recycler_view"/>
 </navigation>

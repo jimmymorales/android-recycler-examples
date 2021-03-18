@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -16,11 +17,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.airbnb.epoxy.EpoxyAttribute
+import com.airbnb.epoxy.EpoxyModelClass
+import com.airbnb.epoxy.EpoxyModelWithHolder
+import dev.jimmymorales.rvdemo.databinding.FragmentEpoxyRecyclerViewBinding
 import dev.jimmymorales.rvdemo.databinding.FragmentMainBinding
 import dev.jimmymorales.rvdemo.databinding.FragmentNestedscrollviewExampleBinding
 import dev.jimmymorales.rvdemo.databinding.FragmentRecyclerViewBinding
 import dev.jimmymorales.rvdemo.databinding.LayoutHeaderViewBinding
 import dev.jimmymorales.rvdemo.databinding.LayoutItemViewBinding
+import dev.jimmymorales.rvdemo.ui.utils.KotlinEpoxyHolder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -44,6 +50,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             rvWithConcatExampleButton.setOnClickListener {
                 findNavController()
                     .navigate(MainFragmentDirections.toRecyclerViewConcatExampleFragment())
+            }
+            epoxyExampleButton.setOnClickListener {
+                findNavController()
+                    .navigate(MainFragmentDirections.toEpoxyRecyclerViewExampleFragment())
             }
         }
     }
@@ -113,15 +123,14 @@ abstract class BaseFragment<VB : ViewBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(createBinding(view)) {
-            initView(binding = this)
+        val binding = createBinding(view)
+        initView(binding)
 
-            viewModel.uiState
-                .onEach { uiState ->
-                    onStateChanged(binding = this, uiState)
-                }
-                .launchIn(viewLifecycleOwner.lifecycle.coroutineScope)
-        }
+        viewModel.uiState
+            .onEach { uiState ->
+                onStateChanged(binding, uiState)
+            }
+            .launchIn(viewLifecycleOwner.lifecycle.coroutineScope)
     }
 }
 
@@ -131,10 +140,9 @@ abstract class BaseFragment<VB : ViewBinding>(
  * DON'T DO THIS! The RecyclerView will have an 'infinite' height so it will render all of the
  * view holder items.
  */
-class NestedScrollViewExampleFragment :
-    BaseFragment<FragmentNestedscrollviewExampleBinding>(
-        R.layout.fragment_nestedscrollview_example
-    ) {
+class NestedScrollViewExampleFragment : BaseFragment<FragmentNestedscrollviewExampleBinding>(
+    R.layout.fragment_nestedscrollview_example
+) {
 
     override fun createBinding(view: View) = FragmentNestedscrollviewExampleBinding.bind(view)
 
@@ -209,8 +217,9 @@ class HeaderViewHolder(
 /**
  * Example with a RecyclerView with different view types
  */
-class RecyclerViewTypesExampleFragment :
-    BaseFragment<FragmentRecyclerViewBinding>(R.layout.fragment_recycler_view) {
+class RecyclerViewTypesExampleFragment : BaseFragment<FragmentRecyclerViewBinding>(
+    R.layout.fragment_recycler_view
+) {
 
     override fun createBinding(view: View) = FragmentRecyclerViewBinding.bind(view)
 
@@ -253,8 +262,9 @@ class HeaderAdapter : RecyclerView.Adapter<HeaderViewHolder>() {
 /**
  * Example with a RecyclerView with a ConcatAdapter
  */
-class RecyclerViewConcatExampleFragment :
-    BaseFragment<FragmentRecyclerViewBinding>(R.layout.fragment_recycler_view) {
+class RecyclerViewConcatExampleFragment : BaseFragment<FragmentRecyclerViewBinding>(
+    R.layout.fragment_recycler_view
+) {
 
     override fun createBinding(view: View) = FragmentRecyclerViewBinding.bind(view)
 
@@ -269,6 +279,64 @@ class RecyclerViewConcatExampleFragment :
             val itemsAdapter = adapters[1] as ItemsAdapter
             headerAdapter.header = state.header
             itemsAdapter.submitList(state.items)
+        }
+    }
+}
+
+/**
+ *  EPOXY EXAMPLE
+ */
+
+@EpoxyModelClass(layout = R.layout.layout_header_view)
+abstract class HeaderModel : EpoxyModelWithHolder<HeaderModel.Holder>() {
+
+    @EpoxyAttribute
+    lateinit var title: String
+
+    override fun bind(holder: Holder) {
+        holder.headerView.text = title
+    }
+
+    class Holder : KotlinEpoxyHolder() {
+        val headerView by bind<TextView>(R.id.headerTextView)
+    }
+}
+
+@EpoxyModelClass(layout = R.layout.layout_item_view)
+abstract class ItemModel : EpoxyModelWithHolder<ItemModel.Holder>() {
+
+    @EpoxyAttribute
+    lateinit var text: String
+
+    override fun bind(holder: Holder) {
+        holder.textView.text = text
+    }
+
+    class Holder : KotlinEpoxyHolder() {
+        val textView by bind<TextView>(R.id.textView)
+    }
+}
+
+class EpoxyRecyclerViewExampleFragment : BaseFragment<FragmentEpoxyRecyclerViewBinding>(
+    R.layout.fragment_epoxy_recycler_view
+) {
+
+    override fun createBinding(view: View) = FragmentEpoxyRecyclerViewBinding.bind(view)
+
+    override fun initView(binding: FragmentEpoxyRecyclerViewBinding) {}
+
+    override fun onStateChanged(binding: FragmentEpoxyRecyclerViewBinding, state: UIState) {
+        binding.epoxyRecyclerView.withModels {
+            header {
+                id("header")
+                title(state.header)
+            }
+            state.items.forEach { itemText ->
+                item {
+                    id(itemText)
+                    text(itemText)
+                }
+            }
         }
     }
 }
