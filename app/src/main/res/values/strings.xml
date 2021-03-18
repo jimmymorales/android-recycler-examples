@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">RV Demo</string>
     <string name="nestedscrollview_example">NestedScrollView Example</string>
+    <string name="rv_with_types_example">RecyclerView with types Example</string>
 </resources>

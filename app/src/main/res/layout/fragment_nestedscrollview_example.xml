@@ -10,19 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/headerTextView"
+        <include
+            android:id="@+id/headerLayout"
+            layout="@layout/layout_header_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/main_padding"
-            android:layout_marginTop="@dimen/main_padding"
-            android:layout_marginEnd="@dimen/main_padding"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Some cool header" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/itemsRecyclerView"
@@ -32,9 +27,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerTextView"
+            app:layout_constraintTop_toBottomOf="@+id/headerLayout"
             tools:itemCount="10"
-            tools:listitem="@tools:sample/first_names" />
+            tools:listitem="@layout/layout_item_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

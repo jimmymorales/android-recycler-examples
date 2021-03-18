@@ -9,14 +9,22 @@
         android:id="@+id/mainFragment"
         android:name="dev.jimmymorales.rvdemo.MainFragment"
         android:label="Main Fragment"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/to_nested_scroll_view_example_fragment"
             app:destination="@id/nestedScrollViewExampleFragment" />
+        <action
+            android:id="@+id/to_recycler_view_types_example_fragment"
+            app:destination="@id/recyclerViewTypesExampleFragment" />
     </fragment>
     <fragment
         android:id="@+id/nestedScrollViewExampleFragment"
         android:name="dev.jimmymorales.rvdemo.NestedScrollViewExampleFragment"
         android:label="NestedScrollView Example Fragment"
         tools:layout="@layout/fragment_nestedscrollview_example" />
+    <fragment
+        android:id="@+id/recyclerViewTypesExampleFragment"
+        android:name="dev.jimmymorales.rvdemo.RecyclerViewTypesExampleFragment"
+        android:label="RecyclerView Types Example Fragment"
+        tools:layout="@layout/fragment_recycler_view" />
 </navigation>
