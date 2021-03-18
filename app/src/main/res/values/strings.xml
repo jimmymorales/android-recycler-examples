@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RV Demo</string>
+    <string name="nestedscrollview_example">NestedScrollView Example</string>
 </resources>
